@@ -13,15 +13,18 @@ const App = () => {
 
   const surprise = () => {
     const randomValue = surpriseOptions[Math.floor(Math.random() * surpriseOptions.length)];
+    console.log('Surprise selected:', randomValue);
     setValue(randomValue);
   };
 
   const getResponse = async () => {
     if (!value) {
       setError("Error! Please ask a question!");
+      console.log('No input value provided');
       return;
     }
     try {
+      console.log('Sending request with value:', value);
       const options = {
         method: 'POST',
         body: JSON.stringify({
@@ -34,23 +37,26 @@ const App = () => {
       };
       const response = await fetch('http://localhost:3000/gemini', options);
       const data = await response.text();
-      console.log(data);
+      console.log('Received response:', data);
       setChatHistory((oldChatHistory) => [...oldChatHistory, {
         role: "user",
         parts: value
-      }, {
+      }, 
+      {
         role: "model",
-        part: data
-      }]);
+        parts: data
+      }
+    ]);
       setValue("");
     }
     catch (error) {
-      console.error(error);
+      console.error('Error in getResponse:', error);
       setError("Something went wrong! Please try again later!");
     }
   };
 
   const clear = () => {
+    console.log('Clearing input and error state');
     setValue("");
     setError("");
     setChatHistory([]);
