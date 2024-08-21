@@ -38,15 +38,11 @@ const App = () => {
       const response = await fetch('http://localhost:3000/gemini', options);
       const data = await response.text();
       console.log('Received response:', data);
-      setChatHistory((oldChatHistory) => [...oldChatHistory, {
-        role: "user",
-        parts: value
-      }, 
-      {
-        role: "model",
-        parts: data
-      }
-    ]);
+      setChatHistory((oldChatHistory) => [
+        ...oldChatHistory,
+        { role: "user", parts: value },
+        { role: "model", parts: data },
+      ]);
       setValue("");
     }
     catch (error) {
